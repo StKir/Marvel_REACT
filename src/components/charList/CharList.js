@@ -37,7 +37,6 @@ const CharList = (props) =>{
             e.currentTarget.focus();
         });
     }   
-    console.log('CharList');
 
     function renderItems(arr) {
         const items = arr.map((item, i) => {
