@@ -1,5 +1,6 @@
 import './singleComicPage.scss';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
+import { createBrowserHistory } from "history";
 import Spinner from '../spinner/Spiner';
 import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelService from '../../services/MarvelService';
@@ -37,6 +38,7 @@ const SingleComic = () => {
 }
 
 const View = ({comic}) => {
+    const history = createBrowserHistory({ window });
     const {description, language, price, thumbnail, title, pageCount} = comic;
     return (
         <div className="single-comic">
@@ -48,7 +50,7 @@ const View = ({comic}) => {
                 <p className="single-comic__descr">Language: {language}</p>
                 <div className="single-comic__price">{price}</div>
             </div>
-            <Link to="/comics" className="single-comic__back">Back to all</Link>
+            <div onClick={() => history.back()} className="single-comic__back">Back to all</div>
         </div>
     )
 }
