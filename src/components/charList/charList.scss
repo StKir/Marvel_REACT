@@ -41,3 +41,28 @@
         color: #fff;
     }
 }
+
+.char__item{
+    opacity: 0;
+}
+
+.char__item-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.char__item-enter-active {
+  opacity: 1;
+  transition: all 500ms;
+  transform: translateY(0px);
+}
+.char__item-exit {
+  opacity: 1;
+}
+.char__item-exit-active {
+  opacity: 0;
+  transition: all 500ms;
+  transform: translateY(0px);
+}
+.char__item-enter-done{
+    opacity: 1;
+}

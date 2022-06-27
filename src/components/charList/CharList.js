@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
+
 import './charList.scss';
 import Spinner from '../spinner/Spiner';
 import ErrorMassage from '../errorMassage/ErrorMassage';
@@ -44,29 +46,36 @@ const CharList = (props) =>{
             item.thumbnail.includes('image_not_available') ? imgStyle = {objectFit: 'unset'} : imgStyle = {objectFit: 'cover'};
 
             return (
-                <li
-                className="char__item"
-                key={item.id}
-                tabIndex={0}
-                ref={(el) => itemsRefs.current[i] = el}
-                onClick={(e) => {props.onCharSelected(item.id);
-                onAddClassSelected(e);
-                }}
-                onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                        props.onCharSelected(item.id);
-                        onAddClassSelected(e)
-                    }
-                }}>
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle} />
-                    <div className="char__name">{item.name}</div>
-                </li>
+                <CSSTransition
+                    key={item.id}
+                    timeout={500}
+                    classNames="char__item">
+                    <li
+                    className="char__item"
+                    key={item.id}
+                    tabIndex={0}
+                    ref={(el) => itemsRefs.current[i] = el}
+                    onClick={(e) => {props.onCharSelected(item.id);
+                    onAddClassSelected(e);
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            props.onCharSelected(item.id);
+                            onAddClassSelected(e)
+                        }
+                    }}>
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                </CSSTransition>
             )
         })
 
         return(
-            <ul className="char__grid">
-                {items}
+            <ul>
+                <TransitionGroup className="char__grid">
+                    {items}
+                </TransitionGroup>
             </ul>
         )
 
