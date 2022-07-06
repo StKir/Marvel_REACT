@@ -1,0 +1,23 @@
+.page_wrp{
+    display: flex;
+    .char_page-img{
+        width: 293px;
+        height: 293px;
+        margin-right: 50px;
+    }
+    .char_page-name{
+        font-style: normal;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 26px;
+        color: #000000;
+    }
+    p{
+        margin-top: 25px;
+        width: 550px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 21px;
+    }
+}
