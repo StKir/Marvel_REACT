@@ -1,11 +1,12 @@
 import './singleCharPage.scss'
-import Thor from '../../resources/img/thor.jpeg'
 
 import { useParams } from 'react-router-dom'
 import Spinner from '../spinner/Spiner';
 import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelService from '../../services/MarvelService';
+
 import { useState, useEffect } from 'react';
+import { Helmet } from "react-helmet";
 
 const SingleCharPage = () => {
     const {charId} = useParams();
@@ -43,6 +44,13 @@ const SingleCharPage = () => {
 const View = ({char}) => {
     return(
         <div className='page_wrp'>
+            <Helmet>
+                <meta
+                    name="description"
+                    content={`${char.name} - character`}
+                />
+                <title>{char.name}</title>
+            </Helmet>
             <img className='char_page-img' src={char.thumbnail} alt={char.name} />
             <div className='char_page_info'>
                 <span className='char_page-name'>{char.name}</span>
