@@ -1,9 +1,8 @@
 import './singleCharPage.scss'
 
 import { useParams } from 'react-router-dom'
-import Spinner from '../spinner/Spiner';
-import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelService from '../../services/MarvelService';
+import setContent from '../../utils/setContent';
 
 import { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
@@ -11,7 +10,7 @@ import { Helmet } from "react-helmet";
 const SingleCharPage = () => {
     const {charId} = useParams();
     const [char, setChar] = useState(null);
-    const {loading, error, getCharacter, clearError} = useMarvelService();
+    const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         getChar(charId);
@@ -22,39 +21,35 @@ const SingleCharPage = () => {
 
         getCharacter(id)
                 .then(charLoaded)
+                .then(() => setProcess('confirmed'))
     }
 
     const charLoaded = (characther) => {
         setChar(characther) 
     }
 
-    const errorMassage = error ? <ErrorMassage/> : null;
-    const spiner = loading? <Spinner/> : null
-    const content = !(error || loading || !char)? <View char={char}/> : null
-
     return(
         <>
-            {errorMassage}
-            {spiner}
-            {content}
+             {setContent(process, View, char)}
         </>
     )
 }
 
-const View = ({char}) => {
+const View = ({data}) => {
+    const {thumbnail, name, description} = data
     return(
         <div className='page_wrp'>
             <Helmet>
                 <meta
                     name="description"
-                    content={`${char.name} - character`}
+                    content={`${name} - character`}
                 />
-                <title>{char.name}</title>
+                <title>{name}</title>
             </Helmet>
-            <img className='char_page-img' src={char.thumbnail} alt={char.name} />
+            <img className='char_page-img' src={thumbnail} alt={name} />
             <div className='char_page_info'>
-                <span className='char_page-name'>{char.name}</span>
-                <p className='char_page-description'>{char.description}</p>
+                <span className='char_page-name'>{name}</span>
+                <p className='char_page-description'>{description}</p>
             </div>
         </div>
     )

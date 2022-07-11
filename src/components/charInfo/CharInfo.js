@@ -3,16 +3,14 @@ import { Link } from 'react-router-dom';
 
 import './charInfo.scss';
 import PropTypes from 'prop-types';
+import setContent from '../../utils/setContent';
 
-import Skeleton from '../skeleton/Skeleton';
-import Spinner from '../spinner/Spiner';
-import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelService from '../../services/MarvelService';
 
 const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
-    const {loading, error, getCharacter, clearError} = useMarvelService();
+    const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -27,29 +25,32 @@ const CharInfo = (props) => {
         clearError();
         getCharacter(charId)
                           .then(onCharLoaded)
+                          .then(() => setProcess('confirmed'))
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const skeleton = char || loading || error ? null : <Skeleton/>;
-    const errorMassage = error ? <ErrorMassage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(error || loading || !char)? <View char={char}/> : null;
+    // const skeleton = char || loading || error ? null : <Skeleton/>;
+    // const errorMassage = error ? <ErrorMassage/> : null;
+    // const spinner = loading ? <Spinner/> : null;
+    // const content = !(error || loading || !char)? <View char={char}/> : null;
 
     return (
         <div className="char__info">
-            {skeleton}
+            {/* {skeleton}
             {errorMassage}
             {spinner}
-            {content}
+            {content} */}
+            {setContent(process, View, char)}
+
         </div>
     )
 }
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki, comics} = data;
     let imgStyle;
     thumbnail.includes('image_not_available') ? imgStyle = {objectFit: 'contain'} : imgStyle = {objectFit: 'cover'};
     let Nocomics = null;

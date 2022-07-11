@@ -1,16 +1,15 @@
 import './singleComicPage.scss';
 import { useParams, Link, unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import { createBrowserHistory } from "history";
-import Spinner from '../spinner/Spiner';
-import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelService from '../../services/MarvelService';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import setContent from '../../utils/setContent';
 
 const SingleComic = () => {
     const {comicId} = useParams();
     const [comic, setComic] = useState(null);
-    const {loading, error, getComic, clearError} = useMarvelService();
+    const {getComic, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateComic();
@@ -21,26 +20,22 @@ const SingleComic = () => {
         clearError();
         getComic(comicId)
                           .then(onComicLoaded)
+                          .then(() => setProcess('confirmed'));
     }
 
     const onComicLoaded = (comic) => {
         setComic(comic);
     }
-    const errorMassage = error ? <ErrorMassage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(error || loading || !comic)? <View comic={comic}/> : null;
     return (
         <>
-            {errorMassage}
-            {spinner}
-            {content}
+            {setContent(process, View, comic)}
         </>
     )
 }
 
-const View = ({comic}) => {
+const View = ({data}) => {
     const history = createBrowserHistory({ window });
-    const {description, language, price, thumbnail, title, pageCount} = comic;
+    const {description, language, price, thumbnail, title, pageCount} = data;
     return (
         <div className="single-comic">
             <Helmet>

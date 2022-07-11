@@ -7,10 +7,12 @@ import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelService from '../../services/MarvelService';
 import PropTypes from 'prop-types';
 
+import setContent from '../../utils/setContent';
+
 const CharList = (props) =>{
 
     const [charList, setcharList] = useState([]);
-    const {loading, error, getAllCharacters, clearError} = useMarvelService();
+    const {loading, error, getAllCharacters, clearError, process, setProcess} = useMarvelService();
     const [newItemLoading, setnewItemLoading] = useState(false);
     const [offset, setoffset] = useState(210);
 
@@ -22,6 +24,7 @@ const CharList = (props) =>{
         initial ? setnewItemLoading(false): setnewItemLoading(true)
         getAllCharacters(offset)
                           .then(onCharListLoaded)
+                          .then(() => setProcess('confirmed'))
     }
 
     const onCharListLoaded = (newCharList) => {
